@@ -4,13 +4,20 @@ import Link from "next/link";
 import Image from "next/image";
 import { cn, formatCurrentcy } from "@/lib/utils";
 import { TrendingDown, TrendingUp } from "lucide-react";
+import { TrendingCoinsFallback } from "../Skaleton";
 
 const TrendingCoins = async () => {
-  const trendingCoins = await fetcher<{ coins: TrendingCoin[] }>(
-    "/search/trending",
-    undefined,
-    300
-  );
+  let trendingCoins;
+  try {
+    trendingCoins = await fetcher<{ coins: TrendingCoin[] }>(
+      "/search/trending",
+      undefined,
+      300
+    );
+  } catch (error) {
+    console.error("Error fetching coin trending:", error);
+    return <TrendingCoinsFallback />;
+  }
   const columns: DataTableColumn<TrendingCoin>[] = [
     {
       header: "Name",
@@ -41,7 +48,11 @@ const TrendingCoins = async () => {
             )}
           >
             <span>
-              {isTrendingUp ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
+              {isTrendingUp ? (
+                <TrendingUp size={16} />
+              ) : (
+                <TrendingDown size={16} />
+              )}
             </span>
             <p className="ml-2">{formatted}</p>
           </div>
@@ -57,7 +68,6 @@ const TrendingCoins = async () => {
   return (
     <div id="trending-coins">
       <h4>Trending Coins</h4>
-      <div >
         <DataTable
           data={trendingCoins.coins.slice(0, 6) || []}
           columns={columns}
@@ -67,7 +77,6 @@ const TrendingCoins = async () => {
           bodyCellClassName="py-2!"
         />
       </div>
-    </div>
   );
 };
 

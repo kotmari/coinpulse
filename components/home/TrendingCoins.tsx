@@ -2,7 +2,7 @@ import { fetcher } from "@/lib/coingecko.actions";
 import DataTable from "../DataTable";
 import Link from "next/link";
 import Image from "next/image";
-import { cn, formatCurrency } from "@/lib/utils";
+import { cn, formatCurrency, formatPercentage } from "@/lib/utils";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { TrendingCoinsFallback } from "../Skaleton";
 
@@ -34,12 +34,10 @@ const TrendingCoins = async () => {
     },
     {
       header: "24h Change",
-      cellClassName: "name-cell",
+      cellClassName: "change-header-cell",
       cell: (coin) => {
         const item = coin.item;
-        const percent = item.data?.price_change_percentage_24h?.usd ?? 0;
-        const isTrendingUp = percent > 0;
-        const formatted = `${isTrendingUp ? "+" : ""}${percent.toFixed(2)}%`;
+        const isTrendingUp = item.data.price_change_percentage_24h.usd > 0;
         return (
           <div
             className={cn(
@@ -47,14 +45,14 @@ const TrendingCoins = async () => {
               isTrendingUp ? "text-green-500" : "text-red-500"
             )}
           >
-            <span>
+            <p className="flex items-center">
               {isTrendingUp ? (
                 <TrendingUp size={16} />
               ) : (
                 <TrendingDown size={16} />
               )}
-            </span>
-            <p className="ml-2">{formatted}</p>
+              {formatPercentage(item.data.price_change_percentage_24h.usd)}
+            </p>
           </div>
         );
       },
@@ -68,15 +66,15 @@ const TrendingCoins = async () => {
   return (
     <div id="trending-coins">
       <h4>Trending Coins</h4>
-        <DataTable
-          data={trendingCoins.coins.slice(0, 6) || []}
-          columns={columns}
-          rowKey={(coin) => coin.item.id}
-          tableClassName="trending-coins-table"
-          headerCellClassName="py-3!"
-          bodyCellClassName="py-2!"
-        />
-      </div>
+      <DataTable
+        data={trendingCoins.coins.slice(0, 6) || []}
+        columns={columns}
+        rowKey={(coin) => coin.item.id}
+        tableClassName="trending-coins-table"
+        headerCellClassName="py-3!"
+        bodyCellClassName="py-2!"
+      />
+    </div>
   );
 };
 

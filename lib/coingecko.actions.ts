@@ -42,9 +42,14 @@ if(!API_KEY) throw new Error ("Could not get api key")
       }
 
       if(network && contractAddress){
+         try{
          const poolData = await fetcher<{data: PoolData[]}>(`/onchain/networks/${network}/tokens/${contractAddress}/pools`)
 
          return poolData.data?.[0] ?? fallback
+         }catch(error){
+            console.error(error)
+             return fallback
+         }
       }
 
       try{

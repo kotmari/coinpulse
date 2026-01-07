@@ -159,7 +159,7 @@
     @apply py-6 md:py-12 mx-auto px-4 sm:px-6 max-w-360 w-full space-y-6 md:space-y-6;
   }
 
-  .badge {
+   .badge {
     @apply font-medium mt-2 h-fit py-1 flex items-center gap-1;
   }
 
@@ -663,7 +663,7 @@
     }
 
     .search-item {
-      @apply grid grid-cols-4 gap-4 items-center justify-between data-[selected=true]:bg-dark-400 transition-all !cursor-pointer hover:bg-dark-400 py-3;
+      @apply grid grid-cols-4 gap-4 items-center justify-between data-[selected=true]:bg-dark-400 transition-all cursor-pointer! hover:bg-dark-400 py-3;
 
       .coin-info {
         @apply flex gap-4 items-center col-span-2;

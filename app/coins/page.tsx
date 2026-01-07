@@ -22,8 +22,8 @@ const Page = async ({ searchParams }: NextPageProps) => {
 
   const columns: DataTableColumn<CoinMarketData>[] = [
     {
-      header: "Rank",
-      cellClassName: "rank-cell",
+      header: 'Rank',
+      cellClassName: 'rank-cell',
       cell: (coin) => (
         <>
           #{coin.market_cap_rank}
@@ -81,7 +81,9 @@ const Page = async ({ searchParams }: NextPageProps) => {
     <main id="coins-page">
       <div className="content">
         <h4>All Coins</h4>
+
         <DataTable
+          tableClassName="coins-table"
           columns={columns}
           data={coinsData}
           rowKey={(coin) => coin.id}
